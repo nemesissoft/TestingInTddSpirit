@@ -2,18 +2,8 @@
 
 namespace Prosiak.Logic
 {
-    public class Pig
+    public record Pig(string Name, DateTime DateOfBirth)
     {
-        public DateTime DateOfBirth { get; }
-
-        public string Name { get; }
-
         public TimeSpan Age => DateTime.Today - DateOfBirth;
-
-        public Pig(string name, DateTime dateOfBirth)
-        {
-            Name = name;
-            DateOfBirth = dateOfBirth;
-        }
     }
 }

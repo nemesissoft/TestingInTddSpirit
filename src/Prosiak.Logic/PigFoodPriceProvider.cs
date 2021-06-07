@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace Prosiak.Logic
 {
     public interface IPigFoodPriceProvider
@@ -5,27 +7,20 @@ namespace Prosiak.Logic
         decimal GetDailyPriceOfFoodFor(Pig pig);
     }
 
-    internal class PigFoodPriceProvider : IPigFoodPriceProvider
+    internal record PigFoodPriceProvider(IPotatoPriceProvider PotatoPriceProvider,
+        ICurrencyConverter CurrencyConverter) : IPigFoodPriceProvider
     {
-        private readonly ICurrencyConverter _currencyConverter;
-        private readonly IPotatoPriceProvider _potatoPriceProvider;
-
-        public PigFoodPriceProvider(IPotatoPriceProvider potatoPriceProvider, ICurrencyConverter currencyConverter)
-        {
-            _currencyConverter = currencyConverter;
-            _potatoPriceProvider = potatoPriceProvider;
-        }
-
         public decimal GetDailyPriceOfFoodFor(Pig pig)
         {
-            var pricePerKgInUsd = _potatoPriceProvider.GetPriceOfHundredKilogramPotatoesFromStockExchange() / 100;
-            var pricePerKgInPln = _currencyConverter.ConvertFromUsdToPln(pricePerKgInUsd);
+            var pricePerKgInUsd = PotatoPriceProvider.GetPriceOfHundredKilogramPotatoesFromStockExchange() / 100;
+            var pricePerKgInPln = CurrencyConverter.ConvertFromUsdToPln(pricePerKgInUsd);
 
-            if (pig.Age.TotalDays < 100)
-                return 2 * pricePerKgInPln;
-            else if (pig.Age.TotalDays < 200)
-                return 3.5m * pricePerKgInPln;
-            else return 3.25m * pricePerKgInPln;
+            return pig.Age.TotalDays switch
+            {
+                < 100 => 2 * pricePerKgInPln,
+                < 200 => 3.5m * pricePerKgInPln,
+                _ => 3.25m * pricePerKgInPln,
+            };
         }
     }
 }
