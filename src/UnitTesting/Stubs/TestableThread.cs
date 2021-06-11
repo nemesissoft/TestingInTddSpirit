@@ -10,7 +10,7 @@ namespace UnitTesting.Stubs
         private readonly Timer _timer;
         public event EventHandler<EventArgs> OnBeat;
 
-        public OldSchoolScheduler() => _timer = new Timer(o => { OnBeat?.Invoke(this, EventArgs.Empty); }, null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+        public OldSchoolScheduler() => _timer = new Timer(_ => { OnBeat?.Invoke(this, EventArgs.Empty); }, null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
 
         public void Dispose() => _timer.Dispose();
     }
@@ -24,7 +24,7 @@ namespace UnitTesting.Stubs
             int numberOfBeats = 0;
 
             var sut = new OldSchoolScheduler();
-            sut.OnBeat += (s, e) => { Interlocked.Increment(ref numberOfBeats); };
+            sut.OnBeat += (_, _) => { Interlocked.Increment(ref numberOfBeats); };
 
             Thread.Sleep(TimeSpan.FromSeconds(2 * 5 + 2)); //we are interested in 2 messages ->> 2*5sec + 2sec to be "sure"
 
@@ -58,7 +58,7 @@ namespace UnitTesting.Stubs
             .Returns(job.Object)
             .Callback
             (
-                (Action action, TimeSpan dueTime, TimeSpan period) => { scheduledAction = action; }
+                (Action action, TimeSpan _, TimeSpan _) => { scheduledAction = action; }
             );
             var sut = new HeartbeatPublisher(messagingService.Object, scheduler.Object);
             sut.Start();
@@ -82,6 +82,7 @@ namespace UnitTesting.Stubs
         void Cancel();
     }
 
+    // ReSharper disable once UnusedMember.Global
     public class TimerScheduler : IScheduler
     {
         public ITimerJob Schedule(Action action, TimeSpan dueTime, TimeSpan period) => new TimerJob(action, dueTime, period);
@@ -90,7 +91,7 @@ namespace UnitTesting.Stubs
         {
             private readonly Timer _timer;
 
-            public TimerJob(Action action, TimeSpan dueTime, TimeSpan period) => _timer = new Timer(o => action(), null, dueTime, period);
+            public TimerJob(Action action, TimeSpan dueTime, TimeSpan period) => _timer = new Timer(_ => action(), null, dueTime, period);
 
             public void Cancel() => _timer.Dispose();
 
@@ -103,8 +104,6 @@ namespace UnitTesting.Stubs
         private readonly IMessagingService _messagingService;
         private readonly IScheduler _scheduler;
         private ITimerJob _timerJob;
-
-        public HeartbeatPublisher(IMessagingService messagingService) : this(messagingService, new TimerScheduler()) { }
 
         public HeartbeatPublisher(IMessagingService messagingService, IScheduler scheduler)
         {

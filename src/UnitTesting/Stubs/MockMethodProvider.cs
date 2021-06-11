@@ -24,17 +24,15 @@ namespace UnitTesting.Stubs
         }
         public string SaveToString()
         {
-            using (var writer = new StringWriter())
-            {
-                SaveToText(writer);
-                writer.Flush();
-                return writer.ToString();
-            }
+            using var writer = new StringWriter();
+            SaveToText(writer);
+            writer.Flush();
+            return writer.ToString();
         }
         public void SaveToStream(Stream stream)
         {
-            using (var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true })
-                SaveToText(writer);
+            using var writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
+            SaveToText(writer);
         }
         public void SaveToText(TextWriter writer)
         {
@@ -50,13 +48,13 @@ namespace UnitTesting.Stubs
         }
         public static MockMethodProvider<TKey, TValue> LoadFromString(string @string)
         {
-            using (var reader = new StringReader(@string))
-                return LoadFromText(reader);
+            using var reader = new StringReader(@string);
+            return LoadFromText(reader);
         }
         public static MockMethodProvider<TKey, TValue> LoadFromStream(Stream stream)
         {
-            using (var reader = new StreamReader(stream, Encoding.UTF8))
-                return LoadFromText(reader);
+            using var reader = new StreamReader(stream, Encoding.UTF8);
+            return LoadFromText(reader);
         }
         public static MockMethodProvider<TKey, TValue> LoadFromText(TextReader reader)
         {

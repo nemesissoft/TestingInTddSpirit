@@ -23,7 +23,7 @@ namespace UnitTesting.Attributes
         [Theory]
         public void SquareRootDefinition(double num)
         {
-            Assume.That(num >= 0.0 && num < double.MaxValue);
+            Assume.That(num is >= 0.0 and < double.MaxValue);
 
             double sqrt = Math.Sqrt(num);
 

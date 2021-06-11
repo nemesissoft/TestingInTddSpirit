@@ -53,10 +53,10 @@ namespace UnitTesting.Stubs
 
             var measurementWithinMargin = (
                 from r in results
-                let success = Is.EqualTo(r.expectedDuration.TotalSeconds).Within(30).Percent.ApplyTo(r.testResult.TotalSeconds)//in nunit 3.0 use ApplyTo(...).IsSuccess. Maybe support for TimeSpan constraints would be fixed in 3.0+
+                let success = Is.EqualTo(r.expectedDuration.TotalSeconds).Within(30).Percent.ApplyTo(r.testResult.TotalSeconds)//TODO in nunit 3.0 use ApplyTo(...).IsSuccess. Maybe support for TimeSpan constraints would be fixed in 3.x ?
                 select success).ToList();
-            var numberOfSuccesfulMeasurements = measurementWithinMargin.Count(m => m.IsSuccess);
-            Assert.That(numberOfSuccesfulMeasurements, Is.GreaterThanOrEqualTo(2), "Minimum 2 measurements need to succeed");
+            var numberOfSuccessfulMeasurements = measurementWithinMargin.Count(m => m.IsSuccess);
+            Assert.That(numberOfSuccessfulMeasurements, Is.GreaterThanOrEqualTo(2), "Minimum 2 measurements need to succeed");
         }
 
         [TestCase("10:00:00", "10:00:15", 00100, 20.0, 151)]
@@ -92,7 +92,7 @@ namespace UnitTesting.Stubs
             Assert.That(steps.FirstOrDefault(), Is.Not.Null.And.EqualTo(start));
         }
 
-        private Scheduler GetScheduler(SchedulerSettings ss) => new Scheduler(ss, _tickProvider) { TickHandler = time => { } };
+        private Scheduler GetScheduler(SchedulerSettings ss) => new(ss, _tickProvider) { TickHandler = _ => { } };
 
         private static TimeSpan Measure(Action actionToMeasure)
         {

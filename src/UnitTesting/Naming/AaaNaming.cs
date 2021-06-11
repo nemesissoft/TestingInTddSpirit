@@ -26,7 +26,7 @@ namespace UnitTesting.Naming
     [TestFixture]
     public class Calculator_WhenTestingSimpleAdd
     {
-        double _result;
+        private double _result;
 
         //[SetUp]
         [OneTimeSetUp]
@@ -45,14 +45,14 @@ namespace UnitTesting.Naming
         public void ShouldProduceCorrectResult() => Assert.That(_result, Is.EqualTo(30.0));
 
         [Test]
-        public void WeCanHaveMultipleSeparatedTestsForResult() => Assert.Fail("Because we can!!!");//really, can we???
+        public void WeCanHaveMultipleSeparatedTestsForResult() => Assert.Fail("Because we can...");//... but should we ???
     }
 
     [TestFixture]
     public class Calculator_WhenTestingCommutativeForAdd
     {
-        double _result1;
-        double _result2;
+        private double _result1;
+        private double _result2;
 
         [OneTimeSetUp]
         public void ArrangeAndAct()
@@ -75,10 +75,7 @@ namespace UnitTesting.Naming
         }
 
         [Test]
-        public void ShouldBothResultsBeEqual()
-        {
-            Assert.That(_result1, Is.EqualTo(_result2));
-        }
+        public void ShouldBothResultsBeEqual() => Assert.That(_result1, Is.EqualTo(_result2));
     }
 
     //contextTest !!!

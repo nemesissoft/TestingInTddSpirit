@@ -23,7 +23,7 @@ namespace UnitTesting.Stubs
         }
     }
 
-    #region way much better :)
+    #region way much better approach 
 
     internal record FilesProcessor(IFilePathsProvider FilePathsProvider, 
         IFileContentProvider FileContentProvider, IDbFactory DbFactory)

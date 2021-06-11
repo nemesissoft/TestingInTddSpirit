@@ -26,11 +26,14 @@ namespace UnitTesting.Attributes
 
         [Test]
         //ERROR ? [ExpectedException( typeof ( ArgumentException ), ExpectedMessage = "x" )]
-        public void ExceptionHandlingExample() 
-            => Assert.That(() => _out.Add(-1, 1.65), Throws.ArgumentException.And.Message.EqualTo("x"));
+        //discuss: Assert.That(() => _out.Add(-1, 1.65), Throws.ArgumentException.And.Message.EqualTo("x"));
+        public void ExceptionHandlingExample()
+            => Assert.That(() => _out.Add(-1, 1.65), Throws.TypeOf<ArgumentOutOfRangeException>()
+                .And.Message.StartWith("Specified argument was out of the range of valid values"));
 
         [Test]
         [Timeout(2000)]
+        [Explicit]//run it on your own - this is demonstration of a test that will always fail - use timeout in more meaningful scenarios 
         public void RunLongOperation() => Thread.Sleep(2500);
 
         [Test]

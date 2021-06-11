@@ -7,16 +7,10 @@ namespace UnitTesting.Attributes
     public class AttributesLifecycleExample
     {
         [OneTimeSetUp]
-        public void CalledOncePerFixtureBeforeAnyTests()
-        {
-            Debug.WriteLine("CalledOncePerFixture - before any tests");
-        }
+        public void CalledOncePerFixtureBeforeAnyTests() => Debug.WriteLine("CalledOncePerFixture - before any tests");
 
         [SetUp]
-        public void CalledBeforeEachTest()
-        {
-            Debug.WriteLine( "CalledBeforeEachTest" );
-        }
+        public void CalledBeforeEachTest() => Debug.WriteLine( "CalledBeforeEachTest" );
 
         [Test]
         public void SomeTestMethod()
@@ -34,15 +28,9 @@ namespace UnitTesting.Attributes
         }
 
         [TearDown]
-        public void CalledAfterEachTest()
-        {
-            Debug.WriteLine("CalledAfterEachTest");
-        }
+        public void CalledAfterEachTest() => Debug.WriteLine("CalledAfterEachTest");
 
         [OneTimeTearDown]
-        public void CalledOncePerFixtureAfterAllTests()
-        {
-            Debug.WriteLine("CalledOncePerFixture - after all tests");
-        }
+        public void CalledOncePerFixtureAfterAllTests() => Debug.WriteLine("CalledOncePerFixture - after all tests");
     }
 }

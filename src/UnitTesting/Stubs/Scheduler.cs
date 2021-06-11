@@ -54,7 +54,7 @@ namespace UnitTesting.Stubs
         public override string ToString() => $"Tick using {_tickProvider.GetType().Name} with settings: {Settings}";
     }
 
-    public struct SchedulerSettings
+    public readonly struct SchedulerSettings
     {
         public DateTime StartTime { get; }
         public DateTime StopTime { get; }

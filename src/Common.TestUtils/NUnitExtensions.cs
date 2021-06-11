@@ -5,10 +5,7 @@ using NUnit.Framework;
 
 namespace Common.TestUtils
 {
-    /// <summary>
-    /// A bunch of useful extensions for assertions, hiding notorious problem with assertion attributes: 
-    /// Example: Assert.IsEqual(actual,expected) or the other way round: Assert.IsEqual(expected, actual)?
-    /// </summary>
+    /// <summary> Stripped down (for simplicity) methods similar to <see cref="http://fluentassertions.com/"/> </summary>
     public static class NUnitExtensions
     {
         public static void ShouldBeNull<T>(this T objectUnderTest) 
